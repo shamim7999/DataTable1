@@ -1,0 +1,62 @@
+﻿@model DataTable1.Models.Employee
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddNewEmployee</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" />
+    <link href="~/Scripts/custom-css.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container mt-2 my-form">
+        <h2>Add New Employee</h2>
+        <form action="@Url.Action("AddNewEmployee", "Employee")" method="post">
+            @*<div class="mb-2">
+                <label for="employeeId" class="form-label">ID</label>
+                <input type="number" class="form-control" id="Id" name="Id" placeholder="Enter ID">
+                @Html.ValidationMessageFor(m => m.Id, "", new { @class = "text-danger" })
+            </div>*@
+            <div class="mb-2">
+                <label for="employeeName" class="form-label">Name</label>
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Enter Name"> 
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" }) 
+            </div>
+            <div class="mb-2">
+                <label for="employeePosition" class="form-label">Position</label>
+                <input type="text" class="form-control" id="Position" name="Position" placeholder="Enter Position"> 
+                @Html.ValidationMessageFor(m => m.Position, "", new { @class = "text-danger" }) 
+            </div>
+            <div class="mb-2">
+                <label for="employeeOffice" class="form-label">Office</label>
+                <input type="text" class="form-control" id="Office" name="Office" placeholder="Enter Office"> 
+                @Html.ValidationMessageFor(m => m.Office, "", new { @class = "text-danger" }) 
+            </div>
+            <div class="mb-2">
+                <label for="employeeAge" class="form-label">Age</label>
+                <input type="number" class="form-control" id="Age" name="Age" placeholder="Enter Age"> 
+                @Html.ValidationMessageFor(m => m.Age, "", new { @class = "text-danger" }) 
+            </div>
+            <div class="mb-2">
+                <label for="employeeSalary" class="form-label">Salary</label>
+                <input type="number" class="form-control" id="Salary" name="Salary" placeholder="Enter Salary"> 
+                @Html.ValidationMessageFor(m => m.Salary, "", new { @class = "text-danger" }) 
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-danger">Reset</button>
+        </form>
+    </div>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>
