@@ -131,7 +131,24 @@ namespace DataTable1.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult GetListUsingEntityFramework(FilterParameters parameters)
+        {
 
+            int totalRows = _employeeService.GetTotalEmployees();
+            Tuple<List<EmployeeModel>, int> result = _employeeEFService.GetFilteredEmployeesUsingEntityFramework(parameters);
+
+            return Json(
+                new
+                {
+                    data = result.Item1,
+                    draw = parameters.draw,
+                    recordsTotal = totalRows,
+                    recordsFiltered = result.Item2
+
+                }, JsonRequestBehavior.AllowGet
+            );
+        }
 
     }
 }

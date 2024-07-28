@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
-using MyDataTableApp.Db;
 using MyDataTableApp.Db.Repositories;
 using MyDataTableApp.Model;
+using MyDataTableApp.Helper;
 
 
 namespace DataTable1.Services
@@ -33,6 +33,11 @@ namespace DataTable1.Services
             var employee = _employeeRepository.AddNewEmployee(employeeModel);
 
             return employee;
+        }
+
+        public Tuple<List<EmployeeModel>, int> GetFilteredEmployeesUsingEntityFramework(FilterParameters parameters)
+        {
+            return _employeeRepository.GetFilteredEmployees(parameters);
         }
     }
 }
