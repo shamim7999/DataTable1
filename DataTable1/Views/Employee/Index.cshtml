@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@*<b>
+    @Html.ActionLink("Click Here", "Index", "Test", "Home")
+</b>*@
+<h2>This is Employee Index</h2>
+
+
+<div class="my-table">
+    <div class="container">
+        <h1>Example of Data Table - Data fetched by AJAX</h1>
+        @Html.ActionLink("Add New", "AddNewEmployeeUsingEntityFramework", "Employee", null, new { @class = "btn btn-success mb-3" })
+        <table id="dataTable" class="display" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Age</th>
+                    <th>Salary</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <thead class="theadInput">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Age</th>
+                    <th>Salary</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be dynamically loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" rel="stylesheet" />
+@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />*@
+<link href="~/Scripts/custom-css.css" rel="stylesheet" />
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.8/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/2.0.8/pagination/bootstrap_input.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script type="text/javascript">
+
+
+
+        $(document).ready(function () {
+
+            // Add search inputs to the header
+            $('#dataTable .theadInput th').each(function () {
+                var title = $(this).text().trim();
+                if (title === null || title.length === 0) {
+                    title = "Action";
+                }
+                var trimmedTitle = title.replace(/\s+/g, '_'); // Replace spaces with underscores
+                $(this).html('<input type="text" id="' + trimmedTitle + '" placeholder="Search ' + title + '" />');
+            });
+
+            $('#Action').css('visibility', 'hidden');
+
+            var dataTableInstance = dataTable();
+
+            $('#Id, #Name, #Position, #Office, #Age, #Salary').on('keyup change', function () {
+                dataTableInstance.ajax.reload();
+            });
+
+        });
+
+        function dataTable() {
+
+            return $('#dataTable').DataTable({
+                ajax: {
+                    url: "/Employee/GetList",
+                    type: "POST",
+                    dataType: "json",
+                    data: function (d) {
+                        d.id = $('#Id').val() !== '' ? parseInt($('#Id').val()) : null;
+                        d.name = $('#Name').val();
+                        d.position = $('#Position').val();
+                        d.office = $('#Office').val();
+                        d.age = $('#Age').val() !== '' ? parseInt($('#Age').val()) : null;
+                        d.salary = $('#Salary').val() !== '' ? parseInt($('#Salary').val()) : null;
+                        d.length = $('#dt-length-0').val();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Ajax error:', textStatus);
+                        console.error('Error details:', errorThrown);
+                    }
+                },
+                columns: [
+                    { data: "Id", name: "Id" },
+                    { data: "Name", name: "Name" },
+                    { data: "Position", name: "Position" },
+                    { data: "Office", name: "Office" },
+                    { data: "Age", name: "Age" },
+
+                    {
+                        data: "Salary",
+                        name: "Salary",
+                        render: function (data, type, row) {
+                            return "$" + data.toLocaleString();
+                        },  
+                    },
+
+                    {
+                        data: null,
+                        name: "Action",
+                        render: function (data, type, row) {
+                            return `
+                                <button class="btn btn-primary btn-update" data-id="${row.Id}">Update</button>
+                                <button class="btn btn-danger btn-delete" data-id="${row.Id}">Delete</button>
+                                `;
+                        },
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                serverSide: true,
+                processing: true,
+                language: {
+                    processing: "Processing ... Please Wait.."
+                }
+            });
+        }
+
+        // Event handlers for update and delete buttons
+        $(document).on('click', '.btn-update', function () {
+            var id = $(this).data('id');
+            window.location.href = '/Employee/UpdateEmployee/' + id;
+
+        });
+
+        $(document).on('click', '.btn-delete', function () {
+            var id = $(this).data('id');
+            window.location.href = '/Employee/DeleteEmployee/' + id;
+        });
+
+    </script>
+}
