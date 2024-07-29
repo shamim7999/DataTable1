@@ -9,8 +9,8 @@ CREATE PROCEDURE spGetEmployees
     @id INT = NULL,
     @age INT = NULL,
     @salary INT = NULL,
-    @sortColumnName NVARCHAR(MAX) = 'Age',
-    @sortDirection NVARCHAR(MAX) = 'Desc',
+    @sortColumnName NVARCHAR(MAX) = NULL,
+    @sortDirection NVARCHAR(MAX) = NULL,
     @start INT = 0,
     @length INT = 10
 AS
@@ -21,6 +21,8 @@ BEGIN
 
     -- Constructing the dynamic ORDER BY clause
     -- SET @OrderBy = ISNULL(@sortColumnName, 'Id') + ' ' + ISNULL(@sortDirection, 'desc');
+	SET @sortColumnName = ISNULL(@sortColumnName, 'Id');
+    SET @sortDirection = ISNULL(@sortDirection, 'asc'); 
     SET @OrderBy = @sortColumnName + ' ' + @sortDirection;
 
     -- Dynamic SQL query

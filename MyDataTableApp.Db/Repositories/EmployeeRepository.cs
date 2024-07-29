@@ -61,7 +61,7 @@ namespace MyDataTableApp.Db.Repositories
 
         private IQueryable<Employee> ApplySorting(IQueryable<Employee> query, FilterParameters parameter)
         {
-            string sortColumnName = parameter.order != null && parameter.order[0].name != null ? parameter.order[0].name.Trim() : null;
+            string sortColumnName = parameter.order?.FirstOrDefault()?.name?.Trim();
             string sortDirection = parameter.order != null && parameter.order[0].dir != null ? parameter.order[0].dir.Trim() : null;
 
             if (!string.IsNullOrEmpty(sortColumnName) && !string.IsNullOrEmpty(sortDirection))
