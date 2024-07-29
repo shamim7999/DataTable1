@@ -17,6 +17,10 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
+using System.Data.Entity.Core.Objects;
+using System.Linq;
+    using MyDataTableApp.Model;
+
 
 public partial class MyEmployeeDBEntities : DbContext
 {
@@ -33,6 +37,9 @@ public partial class MyEmployeeDBEntities : DbContext
 
 
     public virtual DbSet<Employee> Employee { get; set; }
+
+
+    
 
 }
 

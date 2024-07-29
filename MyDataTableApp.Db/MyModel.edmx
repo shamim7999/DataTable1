@@ -16,6 +16,19 @@
           <Property Name="Age" Type="int" Nullable="false" />
           <Property Name="Salary" Type="int" Nullable="false" />
         </EntityType>
+        <Function Name="spGetEmployees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="searchValue" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="name" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="position" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="office" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="id" Type="int" Mode="In" />
+          <Parameter Name="age" Type="int" Mode="In" />
+          <Parameter Name="salary" Type="int" Mode="In" />
+          <Parameter Name="sortColumnName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="sortDirection" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="start" Type="int" Mode="In" />
+          <Parameter Name="length" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="MyEmployeeDBModelStoreContainer">
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -25,6 +38,19 @@
       <Schema Namespace="MyEmployeeDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MyEmployeeDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Employee" EntityType="MyEmployeeDBModel.Employee" />
+          <FunctionImport Name="spGetEmployees">
+            <Parameter Name="searchValue" Mode="In" Type="String" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="position" Mode="In" Type="String" />
+            <Parameter Name="office" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="age" Mode="In" Type="Int32" />
+            <Parameter Name="salary" Mode="In" Type="Int32" />
+            <Parameter Name="sortColumnName" Mode="In" Type="String" />
+            <Parameter Name="sortDirection" Mode="In" Type="String" />
+            <Parameter Name="start" Mode="In" Type="Int32" />
+            <Parameter Name="length" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Employee">
           <Key>
@@ -55,6 +81,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetEmployees" FunctionName="MyEmployeeDBModel.Store.spGetEmployees" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

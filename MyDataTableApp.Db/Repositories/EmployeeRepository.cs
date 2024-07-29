@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyDataTableApp.Model;
 using MyDataTableApp.Helper;
+using System.Data.SqlClient;
 
 namespace MyDataTableApp.Db.Repositories
 {
@@ -127,6 +128,60 @@ namespace MyDataTableApp.Db.Repositories
 
                 return Tuple.Create(employeeModelList, totalRecords);
             }
+
+
+
         }
+
+
+        public Tuple<List<EmployeeModel>, int> GetFilteredEmployeesFromStoredProcedure(FilterParameters parameter)
+        {
+
+            /*
+             https://stackoverflow.com/questions/20901419/how-to-call-stored-procedure-in-entity-framework-6-code-first
+             */
+
+            int start = parameter.start;
+            int length = parameter.length;
+            string name = parameter.name?.Trim();
+            string searchValue = parameter.search?.value?.Trim();
+            string sortColumnName = parameter.order != null && parameter.order[0].name != null ? parameter.order[0].name.Trim() : null;
+            string sortDirection = parameter.order != null && parameter.order[0].dir != null ? parameter.order[0].dir.Trim() : null;
+            string position = parameter.position?.Trim();
+            string office = parameter.office?.Trim();
+            int? age = parameter.age != null ? Convert.ToInt32(parameter.age) : (int?)null;
+            int? id = parameter.id != null ? Convert.ToInt32(parameter.id) : (int?)null;
+            int? salary = parameter.salary != null ? Convert.ToInt32(parameter.salary) : (int?)null;
+
+
+            var parameters = new[]
+            {
+                new SqlParameter("@searchValue", searchValue ?? (object)DBNull.Value),
+                new SqlParameter("@name", name ?? (object)DBNull.Value),
+                new SqlParameter("@position", position ?? (object)DBNull.Value),
+                new SqlParameter("@office", office ?? (object)DBNull.Value),
+                new SqlParameter("@id", id ?? (object)DBNull.Value),
+                new SqlParameter("@age", age ?? (object)DBNull.Value),
+                new SqlParameter("@salary", salary ?? (object)DBNull.Value),
+                new SqlParameter("@sortColumnName", sortColumnName ?? (object)DBNull.Value),
+                new SqlParameter("@sortDirection", sortDirection ?? (object)DBNull.Value),
+                new SqlParameter("@start", start),
+                new SqlParameter("@length", length)
+            };
+
+            using (var context = new MyEmployeeDBEntities())
+            {
+                var employeeList = context.Database.SqlQuery<EmployeeModel>(
+                    "exec spGetEmployees @searchValue, @name, @position, @office, @id, @age, @salary, @sortColumnName, @sortDirection, @start, @length",
+                    parameters
+                ).ToList();
+
+                int totalCount = (employeeList != null && employeeList.Count > 0) ? employeeList[0].TotalCount : 0;
+
+                return Tuple.Create(employeeList, totalCount);
+            }
+
+        }
+
     }
 }

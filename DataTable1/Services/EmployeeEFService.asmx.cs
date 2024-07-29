@@ -37,7 +37,7 @@ namespace DataTable1.Services
 
         public Tuple<List<EmployeeModel>, int> GetFilteredEmployeesUsingEntityFramework(FilterParameters parameters)
         {
-            return _employeeRepository.GetFilteredEmployees(parameters);
+            return _employeeRepository.GetFilteredEmployeesFromStoredProcedure(parameters);
         }
     }
 }

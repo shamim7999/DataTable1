@@ -44,5 +44,7 @@ namespace MyDataTableApp.Model
         [Required(ErrorMessage = "Salary is required.")]
         [Range(20000, 150000, ErrorMessage = "Salary must be between 20,000 and 150,000.")]
         public int Salary { get; set; }
+
+        public int TotalCount { get; set; }
     }
 }
