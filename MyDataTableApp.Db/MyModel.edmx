@@ -51,6 +51,19 @@
             <Parameter Name="start" Mode="In" Type="Int32" />
             <Parameter Name="length" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GetEmployees" ReturnType="Collection(MyEmployeeDBModel.GetEmployees_Result)">
+            <Parameter Name="searchValue" Mode="In" Type="String" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="position" Mode="In" Type="String" />
+            <Parameter Name="office" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="age" Mode="In" Type="Int32" />
+            <Parameter Name="salary" Mode="In" Type="Int32" />
+            <Parameter Name="sortColumnName" Mode="In" Type="String" />
+            <Parameter Name="sortDirection" Mode="In" Type="String" />
+            <Parameter Name="start" Mode="In" Type="Int32" />
+            <Parameter Name="length" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Employee">
           <Key>
@@ -63,6 +76,15 @@
           <Property Name="Age" Type="Int32" Nullable="false" />
           <Property Name="Salary" Type="Int32" Nullable="false" />
         </EntityType>
+        <ComplexType Name="GetEmployees_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Position" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Office" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="Age" Nullable="false" />
+          <Property Type="Int32" Name="Salary" Nullable="false" />
+          <Property Type="Int32" Name="TotalCount" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -82,6 +104,19 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spGetEmployees" FunctionName="MyEmployeeDBModel.Store.spGetEmployees" />
+          <FunctionImportMapping FunctionImportName="GetEmployees" FunctionName="MyEmployeeDBModel.Store.spGetEmployees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MyEmployeeDBModel.GetEmployees_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="Office" ColumnName="Office" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="TotalCount" ColumnName="TotalCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
