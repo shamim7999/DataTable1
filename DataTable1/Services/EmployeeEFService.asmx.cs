@@ -6,7 +6,7 @@ using System.Web.Services;
 using MyDataTableApp.Db.Repositories;
 using MyDataTableApp.Model;
 using MyDataTableApp.Helper;
-
+using MyDataTableApp.Db;
 
 namespace DataTable1.Services
 {
@@ -37,7 +37,10 @@ namespace DataTable1.Services
 
         public Tuple<List<EmployeeModel>, int> GetFilteredEmployeesUsingEntityFramework(FilterParameters parameters)
         {
-            return _employeeRepository.GetFilteredEmployeesFromStoredProcedure(parameters);
+            var results = _employeeRepository.GetFilteredEmployeesFromStoredProcedure(parameters);
+            List<EmployeeModel> employeeList = CustomMapper.MapToEmployeeModelList(results);
+            int totalCount = (employeeList != null && employeeList.Any()) ? employeeList.First().TotalCount : 0;
+            return Tuple.Create(employeeList, totalCount);
         }
     }
 }

@@ -8,6 +8,7 @@ using MyDataTableApp.Model;
 using MyDataTableApp.Helper;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Data.Entity.Core.Objects;
 
 namespace MyDataTableApp.Db.Repositories
 {
@@ -146,38 +147,12 @@ namespace MyDataTableApp.Db.Repositories
 
         }
 
-        public Tuple<List<EmployeeModel>, int> GetFilteredEmployeesFromStoredProcedure(FilterParameters parameters)
+        public ObjectResult<GetEmployees_Result> GetFilteredEmployeesFromStoredProcedure(FilterParameters parameters)
         {
-            int start = parameters.start;
-            int length = parameters.length;
-            string name = parameters.name?.Trim();
-            string searchValue = parameters.search?.value?.Trim();
-            string sortColumnName = parameters.order?.FirstOrDefault()?.name?.Trim();
-            string sortDirection = parameters.order?.FirstOrDefault()?.dir?.Trim();
-            string position = parameters.position?.Trim();
-            string office = parameters.office?.Trim();
-            int? age = parameters.age != null ? Convert.ToInt32(parameters.age) : (int?)null;
-            int? id = parameters.id != null ? Convert.ToInt32(parameters.id) : (int?)null;
-            int? salary = parameters.salary != null ? Convert.ToInt32(parameters.salary) : (int?)null;
-
-
             using (var context = new MyEmployeeDBEntities())
-            {
-                //var GetEmployees_ResultList = context.GetEmployees(searchValue, name, position, office,
-                //    id, age, salary, sortColumnName, sortDirection, start, length
-                //    );
-
-                var GetEmployees_ResultList = context.GetEmployees(parameters);
-
-                //Debug.WriteLine($"in UpdateEmployee(GET) --> Employee_Result: {GetEmployees_ResultList.ToList()}");
-
-                List<EmployeeModel> employeeList = CustomMapper.MapToEmployeeModelList(GetEmployees_ResultList);
-
-                int totalCount = (employeeList != null && employeeList.Any()) ? employeeList.First().TotalCount : 0;
-
-                return Tuple.Create(employeeList, totalCount);
+            
+               return context.GetEmployees(parameters);
             }
-
         }
 
     }
