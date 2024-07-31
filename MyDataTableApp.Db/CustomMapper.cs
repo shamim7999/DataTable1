@@ -10,10 +10,10 @@ namespace MyDataTableApp.Db
 {
     public class CustomMapper
     {
-        public static List<EmployeeModel> MapToEmployeeModelList(ObjectResult<GetEmployees_Result> results)
+        public static List<EmployeeModel> MapToEmployeeModelList(List<Employee> results)
         {
             List<EmployeeModel> employeeList = new List<EmployeeModel>();
-            foreach(GetEmployees_Result employee in results)
+            foreach(Employee employee in results)
             {
                 EmployeeModel employeeModel = new EmployeeModel()
                 {
@@ -23,7 +23,7 @@ namespace MyDataTableApp.Db
                     Position = employee.Position,
                     Office = employee.Office,
                     Salary = employee.Salary,
-                    TotalCount = employee.TotalCount.Value
+                    TotalCount = employee.TotalCount
                 };
 
                 employeeList.Add(employeeModel);

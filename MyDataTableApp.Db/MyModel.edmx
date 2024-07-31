@@ -64,6 +64,19 @@
             <Parameter Name="start" Mode="In" Type="Int32" />
             <Parameter Name="length" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="GetAllEmployees" EntitySet="Employee" ReturnType="Collection(MyEmployeeDBModel.Employee)">
+            <Parameter Name="searchValue" Mode="In" Type="String" />
+            <Parameter Name="name" Mode="In" Type="String" />
+            <Parameter Name="position" Mode="In" Type="String" />
+            <Parameter Name="office" Mode="In" Type="String" />
+            <Parameter Name="id" Mode="In" Type="Int32" />
+            <Parameter Name="age" Mode="In" Type="Int32" />
+            <Parameter Name="salary" Mode="In" Type="Int32" />
+            <Parameter Name="sortColumnName" Mode="In" Type="String" />
+            <Parameter Name="sortDirection" Mode="In" Type="String" />
+            <Parameter Name="start" Mode="In" Type="Int32" />
+            <Parameter Name="length" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Employee">
           <Key>
@@ -117,6 +130,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllEmployees" FunctionName="MyEmployeeDBModel.Store.spGetEmployees" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

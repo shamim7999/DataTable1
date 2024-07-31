@@ -41,6 +41,7 @@ namespace DataTable1.Services
             List<EmployeeModel> employeeList = CustomMapper.MapToEmployeeModelList(results);
             int totalCount = (employeeList != null && employeeList.Any()) ? employeeList.First().TotalCount : 0;
             return Tuple.Create(employeeList, totalCount);
+            
         }
     }
 }

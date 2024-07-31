@@ -58,6 +58,7 @@
     <Compile Include="Employee.cs">
       <DependentUpon>MyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EmployeePartial.cs" />
     <Compile Include="GetEmployees_Result.cs">
       <DependentUpon>MyModel.tt</DependentUpon>
     </Compile>

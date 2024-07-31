@@ -147,11 +147,13 @@ namespace MyDataTableApp.Db.Repositories
 
         }
 
-        public ObjectResult<GetEmployees_Result> GetFilteredEmployeesFromStoredProcedure(FilterParameters parameters)
+        public List<Employee> GetFilteredEmployeesFromStoredProcedure(FilterParameters parameters)
         {
             using (var context = new MyEmployeeDBEntities())
-            
-               return context.GetEmployees(parameters);
+            { 
+               var results = context.GetAllEmployees(parameters).ToList();
+
+               return results;
             }
         }
 

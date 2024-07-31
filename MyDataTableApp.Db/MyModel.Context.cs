@@ -21,6 +21,7 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
     using MyDataTableApp.Helper;
 
+
 public partial class MyEmployeeDBEntities : DbContext
 {
     public MyEmployeeDBEntities()
@@ -31,6 +32,8 @@ public partial class MyEmployeeDBEntities : DbContext
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
+            modelBuilder.Entity<Employee>()
+                    .Ignore(i => i.TotalCount);
         throw new UnintentionalCodeFirstException();
     }
 
@@ -103,61 +106,185 @@ public partial class MyEmployeeDBEntities : DbContext
     public virtual ObjectResult<GetEmployees_Result> GetEmployees(FilterParameters parameters)
     {
 
-        var searchValueParameter = parameters.search.value != null ?
-            new ObjectParameter("searchValue", parameters.search.value) :
+            var searchValueParameter = parameters.search.value != null ?
+                   new ObjectParameter("searchValue", parameters.search.value) :
+                   new ObjectParameter("searchValue", typeof(string));
+
+
+            var nameParameter = parameters.name != null ?
+                new ObjectParameter("name", parameters.name) :
+                new ObjectParameter("name", typeof(string));
+
+
+            var positionParameter = parameters.position != null ?
+                new ObjectParameter("position", parameters.position) :
+                new ObjectParameter("position", typeof(string));
+
+
+            var officeParameter = parameters.office != null ?
+                new ObjectParameter("office", parameters.office) :
+                new ObjectParameter("office", typeof(string));
+
+
+            var idParameter = parameters.id.HasValue ?
+                new ObjectParameter("id", parameters.id) :
+                new ObjectParameter("id", typeof(int));
+
+
+            var ageParameter = parameters.age.HasValue ?
+                new ObjectParameter("age", parameters.age) :
+                new ObjectParameter("age", typeof(int));
+
+
+            var salaryParameter = parameters.salary.HasValue ?
+                new ObjectParameter("salary", parameters.salary) :
+                new ObjectParameter("salary", typeof(int));
+
+
+            var sortColumnNameParameter = parameters.order != null && parameters.order[0].name != null ?
+                new ObjectParameter("sortColumnName", parameters.order[0].name.Trim()) :
+                new ObjectParameter("sortColumnName", typeof(string));
+
+            var sortDirectionParameter = parameters.order != null && parameters.order[0].dir != null ?
+                new ObjectParameter("sortDirection", parameters.order[0].dir) :
+                new ObjectParameter("sortDirection", typeof(string));
+
+
+            var startParameter = parameters.start >= 0 ?
+                new ObjectParameter("start", parameters.start) :
+                new ObjectParameter("start", typeof(int));
+
+
+            var lengthParameter = parameters.length > 0 ?
+                new ObjectParameter("length", parameters.length) :
+                new ObjectParameter("length", typeof(int));
+
+
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployees_Result>("GetEmployees", searchValueParameter, nameParameter, positionParameter, officeParameter, idParameter, ageParameter, salaryParameter, sortColumnNameParameter, sortDirectionParameter, startParameter, lengthParameter);
+    }
+
+
+    public virtual ObjectResult<Employee> GetAllEmployees(FilterParameters parameters)
+    {
+
+            var searchValueParameter = parameters.search.value != null ?
+                new ObjectParameter("searchValue", parameters.search.value) :
+                new ObjectParameter("searchValue", typeof(string));
+
+
+            var nameParameter = parameters.name != null ?
+                new ObjectParameter("name", parameters.name) :
+                new ObjectParameter("name", typeof(string));
+
+
+            var positionParameter = parameters.position != null ?
+                new ObjectParameter("position", parameters.position) :
+                new ObjectParameter("position", typeof(string));
+
+
+            var officeParameter = parameters.office != null ?
+                new ObjectParameter("office", parameters.office) :
+                new ObjectParameter("office", typeof(string));
+
+
+            var idParameter = parameters.id.HasValue ?
+                new ObjectParameter("id", parameters.id) :
+                new ObjectParameter("id", typeof(int));
+
+
+            var ageParameter = parameters.age.HasValue ?
+                new ObjectParameter("age", parameters.age) :
+                new ObjectParameter("age", typeof(int));
+
+
+            var salaryParameter = parameters.salary.HasValue ?
+                new ObjectParameter("salary", parameters.salary) :
+                new ObjectParameter("salary", typeof(int));
+
+
+            var sortColumnNameParameter = parameters.order != null && parameters.order[0].name != null ?
+                new ObjectParameter("sortColumnName", parameters.order[0].name.Trim()) :
+                new ObjectParameter("sortColumnName", typeof(string));
+
+            var sortDirectionParameter = parameters.order != null && parameters.order[0].dir != null ?
+                new ObjectParameter("sortDirection", parameters.order[0].dir) :
+                new ObjectParameter("sortDirection", typeof(string));
+
+
+            var startParameter = parameters.start >= 0 ?
+                new ObjectParameter("start", parameters.start) :
+                new ObjectParameter("start", typeof(int));
+
+
+            var lengthParameter = parameters.length > 0 ?
+                new ObjectParameter("length", parameters.length) :
+                new ObjectParameter("length", typeof(int));
+
+
+
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Employee>("GetAllEmployees", searchValueParameter, nameParameter, positionParameter, officeParameter, idParameter, ageParameter, salaryParameter, sortColumnNameParameter, sortDirectionParameter, startParameter, lengthParameter);
+    }
+
+
+    public virtual ObjectResult<Employee> GetAllEmployees(string searchValue, string name, string position, string office, Nullable<int> id, Nullable<int> age, Nullable<int> salary, string sortColumnName, string sortDirection, Nullable<int> start, Nullable<int> length, MergeOption mergeOption)
+    {
+
+        var searchValueParameter = searchValue != null ?
+            new ObjectParameter("searchValue", searchValue) :
             new ObjectParameter("searchValue", typeof(string));
 
 
-        var nameParameter = parameters.name != null ?
-            new ObjectParameter("name", parameters.name) :
+        var nameParameter = name != null ?
+            new ObjectParameter("name", name) :
             new ObjectParameter("name", typeof(string));
 
 
-        var positionParameter = parameters.position != null ?
-            new ObjectParameter("position", parameters.position) :
+        var positionParameter = position != null ?
+            new ObjectParameter("position", position) :
             new ObjectParameter("position", typeof(string));
 
 
-        var officeParameter = parameters.office != null ?
-            new ObjectParameter("office", parameters.office) :
+        var officeParameter = office != null ?
+            new ObjectParameter("office", office) :
             new ObjectParameter("office", typeof(string));
 
 
-        var idParameter = parameters.id.HasValue ?
-            new ObjectParameter("id", parameters.id) :
+        var idParameter = id.HasValue ?
+            new ObjectParameter("id", id) :
             new ObjectParameter("id", typeof(int));
 
 
-        var ageParameter = parameters.age.HasValue ?
-            new ObjectParameter("age", parameters.age) :
+        var ageParameter = age.HasValue ?
+            new ObjectParameter("age", age) :
             new ObjectParameter("age", typeof(int));
 
 
-        var salaryParameter = parameters.salary.HasValue ?
-            new ObjectParameter("salary", parameters.salary) :
+        var salaryParameter = salary.HasValue ?
+            new ObjectParameter("salary", salary) :
             new ObjectParameter("salary", typeof(int));
 
 
-        var sortColumnNameParameter = parameters.order != null && parameters.order[0].name != null ?
-            new ObjectParameter("sortColumnName", parameters.order[0].name.Trim()) :
+        var sortColumnNameParameter = sortColumnName != null ?
+            new ObjectParameter("sortColumnName", sortColumnName) :
             new ObjectParameter("sortColumnName", typeof(string));
 
-        var sortDirectionParameter = parameters.order != null && parameters.order[0].dir != null ?
-            new ObjectParameter("sortDirection", parameters.order[0].dir) :
+
+        var sortDirectionParameter = sortDirection != null ?
+            new ObjectParameter("sortDirection", sortDirection) :
             new ObjectParameter("sortDirection", typeof(string));
 
 
-        var startParameter = parameters.start >= 0 ?
-            new ObjectParameter("start", parameters.start) :
+        var startParameter = start.HasValue ?
+            new ObjectParameter("start", start) :
             new ObjectParameter("start", typeof(int));
 
 
-        var lengthParameter = parameters.length > 0 ?
-            new ObjectParameter("length", parameters.length) :
+        var lengthParameter = length.HasValue ?
+            new ObjectParameter("length", length) :
             new ObjectParameter("length", typeof(int));
 
 
-        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmployees_Result>("GetEmployees", searchValueParameter, nameParameter, positionParameter, officeParameter, idParameter, ageParameter, salaryParameter, sortColumnNameParameter, sortDirectionParameter, startParameter, lengthParameter);
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Employee>("GetAllEmployees", mergeOption, searchValueParameter, nameParameter, positionParameter, officeParameter, idParameter, ageParameter, salaryParameter, sortColumnNameParameter, sortDirectionParameter, startParameter, lengthParameter);
     }
 
 }
